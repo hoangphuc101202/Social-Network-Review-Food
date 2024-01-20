@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>Bueno - Food Blog</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/img/core-img/favicon.ico">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" media="all" rel="stylesheet" type="text/css" />
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+   <style>
+ /* CSS để ẩn modal mặc định */
+        #createPostModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 9999;
+        }
+
+        .modal-content {
+        background: white;
+        width: 80%; /* Thay đổi độ rộng modal */
+        max-width: 800px; /* Đặt giới hạn độ rộng tối đa */
+        margin: 100px auto;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+        
+        .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 9999;
+        }
+
+        .modal-dialog {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        }
+
+        .modal-content {
+        background: white;
+        width: 80%; /* Thay đổi độ rộng modal */
+        max-width: 800px; /* Đặt giới hạn độ rộng tối đa */
+        margin: 100px auto;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+   </style>
+</head>
+<body>
+     <!-- Preloader -->
+     <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-content">
+            <h3>Cooking in progress..</h3>
+            <div id="cooking">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div id="area">
+                    <div id="sides">
+                        <div id="pan"></div>
+                        <div id="handle"></div>
+                    </div>
+                    <div id="pancake">
+                        <div id="pastry"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+
+        <!-- Top Header Area -->
+        <div class="top-header-area bg-img bg-overlay" style="background-image: url(/img/bg-img/header.jpg);">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center justify-content-between">
+                    <div class="col-12 col-sm-6">
+                        <!-- Top Social Info -->
+                        <div class="top-social-info">
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google"><i class="fa fa-google" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-5 col-xl-4">
+                        <!-- Top Search Area -->
+                        <div class="top-search-area">
+                            <form action="/search-all" method="post">
+                                <input type="search" name="search" id="topSearch" placeholder="Search">
+                                <button type="submit" class="btn"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Navbar Area -->
+        <div class="bueno-main-menu" id="sticker">
+            <div class="classy-nav-container breakpoint-off">
+                <div class="container">
+                    <!-- Menu -->
+                    <nav class="classy-navbar justify-content-between" id="buenoNav">
+
+                        <!-- Toggler -->
+                        <div id="toggler"><img src="/img/core-img/toggler.png" alt=""></div>
+
+                        <!-- Navbar Toggler -->
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div> 
+                        <!-- Menu -->
+                        <div class="classy-menu">
+
+                            <!-- Close Button -->
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
+
+                            <!-- Nav Start -->
+                            <div class="classynav">
+                                <ul>
+                                    <li><a href="/home">Home</a></li>
+                                    <li><a href="/category">Category</a></li>
+                                    <li><a href="#">Contact</a></li>
+                                </ul>
+                               
+                             <!-- Sử dụng Bootstrap để tạo dropdown menu với hình ảnh avatar -->
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="<%= users.imageUser %>" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                    </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="#">My Post</a>
+                                    <a class="dropdown-item" href="/users/edit-user/<%= users._id %>">Edit Information</a>
+                                    <a class="dropdown-item" href="/auth/logout">Log Out</a>
+                                </div>
+                            </div>
+                            </div>
+                            <!-- Nav End -->
+                            
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col">
+                <img style="object-fit: cover;" src="<%= users.imageUser %>" class="w-75 h-60 border rounded-5" alt="...">
+            </div>
+            <div class="col-6 d-flex flex-column align-items-start">
+                <p class="text-capitalize fs-2 text fw-semibold mb-auto" style="color: #817773;"><%= users.fullname %></p>
+                <p class="text-uppercase fw-semibold" style="color: #b0c364;">User's Post: <%= count %> </p>
+                <p class=" fw-semibold" style="color: #b0c364;">Follower: <%= countFollowed %> </p>
+
+            </div>
+            <div class="col align-self-center order-1 order-md-2">
+                <a class="btn-lg btn-outline-light" style="color:#b0c364;" href="/users/edit-user/<%= users._id %>" role="button">Edit Information</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container mt-4 w-50">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav fs-6 text"  >
+                    <li class="nav-item" >
+                      <a class="nav-link" style="color: #b0c364;" href="/users/mypost/<%= users._id %>">Posts <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" style="color: #b0c364;" href="/users/following/<%= users._id %>">Following</a>
+                    </li>
+                  </ul>
+                  
+            </div>
+          </nav>
+    </div>
+    <div class="container mt-4">
+        <button class="col border rounded-5 btn-lg btn-block btn-light" data-bs-toggle="modal" data-bs-target="#createPostModal" role="button" style="color: #b0c364;">Hôm nay bạn ăn gì?</button>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="createPostModal" tabindex="-1" aria-labelledby="createPostModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createPostModalLabel">Create a Post</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createPostForm" enctype="multipart/form-data" method="post" action="/users/addPost/<%= users._id %>">
+                        <div class="mb-3">
+                            <label for="postTitle" class="form-label text fw-medium">Post Title</label>
+                            <input type="text" class="form-control" id="postTitle" placeholder="Enter post title" required name="postTitle">
+                        </div>
+                        <div class="mb-3">
+                            <label for="postContent" class="form-label text fw-medium">Post Content</label>
+                            <textarea class="form-control" id="postContent" placeholder="Enter post content" required name="postContent"></textarea>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label for="city" class="form-label text fw-medium">City</label>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <select id="city" name="city">
+                                        <option value="Hanoi">Ha Noi</option>
+                                        <option value="HoChiMinhCity">Ho Chi Minh City</option>
+                                        <option value="Danang">Da Nang</option>
+                                        <!-- Add other cities -->
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="postContent" class="form-label text fw-medium">Post Images</label>
+                            <input type="file" name="image" id="file-input" required accept="image/png, image/jpeg" onchange="preview()">
+                            <label id="input-file" for="file-input">
+                                <i class="fas fa-upload"></i> &nbsp; Choose A Photo
+                            </label>
+                            <p id="num-of-files">No Files Chosen</p>
+                            <div id="images"></div>
+                            <button type="button" class="btn btn-danger" id="btn-remove" onclick="removeImage()" style="display: none;">
+                                <i class="fas fa-times-circle"></i> Remove
+                            </button>
+                        </div>
+    
+                        <button type="submit"  class="btn btn-block" onclick="validatePicture(event)" style="background-color: #b0c364; color: white;">Create Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-4 mt-0">
+                <div class="card mb-3">
+                    <div class="card-header" style="color: #b0c364;">
+                        Following: <%= countFollower %>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <% UserFollowedRender.forEach(users => { %>
+                             
+                                <div class="col-6 mb-3">
+                                    <div class="card" style="width: 150px;">
+                                        <img src="<%= users.followedId.imageUser %>" class="card-img-top" alt="..." style="height: 150px; object-fit: cover;">
+                                        <div class="card-body" style="padding: 8px;">
+                                           <a href="/user/<%= users.followedId._id %>"><h5 class="card-title" style="font-size: 14px;"><%= users.followedId.fullname %></h5></a> 
+                                        </div>
+                                    </div>
+                                </div>
+                            <% }) %>
+                            
+                            <!-- Thêm card khác nếu cần -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+
+                <% posts.forEach(post => {  %>
+                    <div class="row mb-3"> 
+                        <div class="col-12">
+                        <!-- Thêm lớp để căn chỉnh phía bên phải -->
+                            <div class="card border rounded-pill" style="width: 100%;">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-md-4 d-flex align-items-center justify-content-center">
+                                        <div class="img-container" style="width: 150px; height: 150px; overflow: hidden; border-radius: 40%;">
+                                            <img src="/image/<%= post.image %>" class="img-thumbnail img-fluid rounded" style="object-fit: cover; width: 100%; height: 100%;" class="card-img" alt="...">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 position-relative"> <!-- Sử dụng position-relative cho cột chứa nội dung -->
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title limit-title"><%= post.title %></h5>
+                                            <p class="card-text" id="postContent_<%= post._id %>"><%= post.content %></p>
+                                            <a href="/single-post/<%= post._id %>" type="button"><button class="btn btn-link read-more-btn" id="readMore_<%= post._id %>">Read more</button></a> 
+                                            <p class="card-text"><small class="text-muted"><%= post.createdAt.toDateString() %></small></p>
+                                            <div class="position-absolute top-0 end-0" style="margin-right: -9px;">
+                                                <div class="dropdown">
+                                                    <button class="btn dropdown-toggle border rounded-circle btn-outline-dark" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <!-- Dấu "..." để chỉ ra có thêm tùy chọn -->
+                                                    </button>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                        <a class="dropdown-item" type="button" data-bs-toggle="modal"  data-bs-target="#EditPostModal_<%= post._id %>" href="#"><i class="fas fa-edit mr-2"></i>Edit</a>
+                                                        <a class="dropdown-item delete-post" type="button" data-bs-toggle="modal" data-id="<%= post._id %>" data-bs-target="#DeleteModal_<%= post._id %>" href="#">
+                                                            <i class="fas fa-trash-alt mr-2"></i> Delete
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="modal fade" id="EditPostModal_<%= post._id %>" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-md">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editPostModalLabel">Edit This Post</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editPostForm" enctype="multipart/form-data" method="post" action="/users/edit-post/<%= users._id %>/<%= post._id %>">
+                                        <div class="mb-3">
+                                            <label for="postTitleEdit" class="form-label text fw-medium">Post Title</label>
+                                            <input type="text" class="form-control" id="postTitleEdit" value="<%= post.title %>" required name="postTitleEdit">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="postContentEdit" class="form-label text fw-medium">Post Content</label>
+                                            <textarea class="form-control" id="postContentEdit" required name="postContentEdit"><%= post.content %></textarea>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <label for="cityEdit" class="form-label text fw-medium">City</label>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="mb-3">
+                                                    <select id="cityEdit" name="cityEdit" class="form-select">
+                                                        <option selected value="<%= post.category %>"><%= post.category %></option>
+                                                        <option value="Hanoi">Ha Noi</option>
+                                                        <option value="HoChiMinhCity">Ho Chi Minh City</option>
+                                                        <option value="Danang">Da Nang</option>
+                                                        <!-- Add other cities -->
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="file-input-edit" class="form-label text fw-medium">Post Images</label>
+                                            <div class="custom-file">
+                                                <input type="file" name="imageEdit" class="custom-file-input" id="file-input-edit_<%= post._id %>" accept="image/png, image/jpeg" onchange="previewEdit('<%= post._id %>')" aria-describedby="input-file-edit">
+                                                <label class="custom-file-label" for="file-input-edit_<%= post._id %>">Choose A Photo</label>
+                                            </div>
+                                            <div id="imagesEdit_<%= post._id %>"></div>
+                                            <img src="/image/<%= post.image %>" id="valueImageEdit" class="preview-image" alt="Image">
+                                            <input type="hidden" id="inputImagePrevious_<%= post._id %>" name="valueImage" value="<%= post.image %>">
+                                            <button type="button" class="btn btn-danger" id="btn-remove-edit-value_<%= post._id %>" onclick="removeImageValueEdit('<%= post._id %>')">
+                                                <i class="fas fa-times-circle"></i> Remove
+                                            </button>
+                                        </div>
+                                        <button type="submit" class="btn btn-block" onclick="validateAndSubmit('<%= post._id %>', event)" style="background-color: #b0c364; color: white;">Edit Post</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                    
+                    
+                    <div class="modal fade" id="DeleteModal_<%= post._id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="exampleModalLabel">Confirm Deletion </h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body fw-medium">
+                                Are You Sure Want To Delete This Post?
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              <a href="/users/deletePost/<%= users._id %>/<%= post._id %>"><button type="button" class="btn btn-outline-light" style="background-color: #b0c364;">Delete</button></a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                <% }) %>
+            </div>
+        </div>
+        
+    </div>
+    <div class="modal fade" id="imageRequiredModal" tabindex="-1" aria-labelledby="imageRequiredModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="imageRequiredModalLabel">Thông báo</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Vui lòng chọn ít nhất một bức ảnh!
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" style="background-color: #b0c364;" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    
+    <!-- <script>
+        // JavaScript code
+    document.addEventListener('DOMContentLoaded', function () {
+    const deleteButtons = document.querySelectorAll('.delete-post');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const postId = button.dataset.id;
+            console.log('ID of the post to delete:', postId);
+
+            // Thực hiện các hành động khác ở đây, ví dụ: gửi yêu cầu xóa bài viết thông qua postId
+        });
+    });
+});
+
+    </script> -->
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qt/HFklTJBj/gBOV8G3HcKn4NfQblz" crossorigin="anonymous"></script>
+ 
+    <script src="/js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap js -->
+    <!-- All Plugins js -->
+    <script src="/js/plugins/plugins.js"></script>
+    <!-- Active js -->
+    <script src="/js/active.js"></script>
+    
+    
+</body>
+</html>

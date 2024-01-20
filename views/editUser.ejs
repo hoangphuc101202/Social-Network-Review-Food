@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Title -->
+    <title>Bueno - Food Blog</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="/img/core-img/favicon.ico">
+    
+
+    <link rel="stylesheet" href="/style.css">
+   <style>
+
+   </style>
+  
+    
+</head>
+<body>
+     <!-- Preloader -->
+     <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-content">
+            <h3>Cooking in progress..</h3>
+            <div id="cooking">
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div class="bubble"></div>
+                <div id="area">
+                    <div id="sides">
+                        <div id="pan"></div>
+                        <div id="handle"></div>
+                    </div>
+                    <div id="pancake">
+                        <div id="pastry"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+
+        <!-- Top Header Area -->
+        <div class="top-header-area bg-img bg-overlay" style="background-image: url(/img/bg-img/header.jpg);">
+            <div class="container h-100">
+                <div class="row h-100 align-items-center justify-content-between">
+                    <div class="col-12 col-sm-6">
+                        <!-- Top Social Info -->
+                        <div class="top-social-info">
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="bottom" title="Google"><i class="fa fa-google" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-lg-5 col-xl-4">
+                        <!-- Top Search Area -->
+                        <div class="top-search-area">
+                            <form action="/search-all" method="post">
+                                <input type="search" name="search" id="topSearch" placeholder="Search">
+                                <button type="submit" class="btn"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Navbar Area -->
+        <div class="bueno-main-menu" id="sticker">
+            <div class="classy-nav-container breakpoint-off">
+                <div class="container">
+                    <!-- Menu -->
+                    <nav class="classy-navbar justify-content-between" id="buenoNav">
+
+                        <!-- Toggler -->
+                        <div id="toggler"><img src="/img/core-img/toggler.png" alt=""></div>
+                        
+                        <!-- Navbar Toggler -->
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div> 
+                        <!-- Menu -->
+                        <div class="classy-menu">
+
+                            <!-- Close Button -->
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
+
+                            <!-- Nav Start -->
+                            <div class="classynav">
+                                <ul>
+                                    <li><a href="/home">Home</a></li>
+                                    <li><a href="/category">Category</a></li>
+                                    <li><a href="#">Contact</a></li>
+                                </ul>
+                               
+                             <!-- Sử dụng Bootstrap để tạo dropdown menu với hình ảnh avatar -->
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="<%= users.imageUser %>" alt="User Avatar" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                                  
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/users/mypost/<%= users._id %>">My Post</a>
+                                    <a class="dropdown-item" href="/users/edit-user/<%= users._id %>">Edit Information</a>
+                                    <a class="dropdown-item" href="/auth/logout">Log Out</a>
+                                    </div>
+                                </div>
+                                    
+                            </div>
+                            <!-- Nav End -->
+                            
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form enctype="multipart/form-data" method="post" action="/users/edit-user/<%= users._id %>"  >
+                        <div class="avatar-wrapper">
+                            <img class="profile-pic" style="object-fit: cover;" src="<%= users.imageUser %>" />
+                            <div class="upload-button">
+                                <i class="fa" aria-hidden="true"></i>
+                            </div>
+                            <input type="hidden" name="hinhanh" value="<%= users.imageUser.replace("/image/","") %>">
+                            <input class="file-upload" type="file" name="hinhanh"/>
+                        </div>  
+                        <% if (!idGoogle) { %>
+                            <button id="myBtn" class="btn" style="background-color: #b0c364;" type="button">Change Password</button>
+                        <% } %>       
+                        <div class="form-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" class="form-control" id="fullname" placeholder="Enter Full Name" value="<%= users.fullname %>" name ="fullname" >
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" class="form-control" readonly id="email" placeholder="Enter email" value="<%= users.email %>"name ="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone number</label>
+                            <input type="tel" class="form-control" id="phone"  placeholder="Enter phone number" value="<%= users.phone %>"name ="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="dob">Date of birth</label>
+                            <input type="date" class="form-control" id="dob" value="<%= (users.birthday && users.birthday.toISOString().split('T')[0]) || '' %>" name="dob">
+                        </div>
+                        <select  size="3" aria-label="size 3 select example" id="gender" name="gender">
+                            <option selected value="<%= users.gender %>"><%= users.gender %></option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                       
+                       <div style="margin-top: 70px;">
+                        <button type="submit" class="btn btn-block" style="background-color: #b0c364;">Save Changes</button>
+                       </div>
+                       
+                    </form>
+                   
+                </div>
+                
+            </div>
+        </div>
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <form id="passwordForm" action="/users/edit-password/<%= users._id %>" method="post">
+                    <div class="form-group">
+                        <label for="NewPassword">New password</label>
+                        <input type="password" class="form-control" required id="NewPassword" placeholder="Enter password"  name="password">
+                    </div>
+                    <div class="form-group">
+                        <label for="ConfirmPassword">Confirm password</label>
+                        <input type="password" class="form-control" id="ConfirmPassword" placeholder="Confirm password">
+                        <span id="passwordError" style="color: red; display: none;">Passwords do not match.</span>
+                    </div>
+                    <div style="margin-left: 220px;">
+                        <button type="submit" class="btn" style="background-color: #b0c364;">Save Password</button>
+                    </div>
+                </form>
+            </div>
+    </header>
+   
+   <script>
+    // Get the modal
+
+   </script>
+       <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qt/HFklTJBj/gBOV8G3HcKn4NfQblz" crossorigin="anonymous"></script>
+
+    <script src="/js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="/js/bootstrap/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="/js/bootstrap/bootstrap.min.js"></script>
+    <script src="/js/plugins/plugins.js"></script>
+    <!-- Active js -->
+    <script src="/js/active.js"></script>
+    
+</body>
+</html>
