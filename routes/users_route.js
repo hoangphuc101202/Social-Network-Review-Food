@@ -17,5 +17,5 @@ Router.post('/edit-post/:idUser/:idPost', upload.single('imageEdit'), editPost);
 Router.post('/follow/:id',verifyAccessToken,addfollower);
 Router.delete('/deletefollow/:id',verifyAccessToken,deleteFollower);
 Router.post('/addComment/:id',verifyAccessToken, addComment);
-Router.get('/noti',verifyAccessToken,getAllNotification);
+// Router.get('/noti',verifyAccessToken,getAllNotification);
 module.exports = Router;

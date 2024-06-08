@@ -3,6 +3,7 @@ const userModel = require('../model/usersModel');
 const {getUsersByID} = require('../queries/usersQueries');
 const {CountPostOfUsers} = require('../queries/postQueries');
 const {imageUsers} = require('../queries/authQueries');
+const {createFollowNotification} = require('../controller/notiController');
 module.exports = {
     addfollower : async (req,res,next) => {
         if (!req.payload || !req.payload.email) {
@@ -15,7 +16,8 @@ module.exports = {
             followedId: idUserFollowed
         })
         await userFollower.save();
-        return res.status(200).send('Đã Theo Dõi người này');
+        await createFollowNotification(idUserFollowed,idUserFollower);
+        return res.status(200).send('Đã Theo Dõi người này');       
     },
     checkFollowing : async (idUser,idUserFollower) => {
         const followerRecord = await followerModel.findOne({followerId: idUserFollower,

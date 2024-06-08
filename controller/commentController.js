@@ -1,6 +1,7 @@
 const userModel = require('../model/usersModel');
 const postModel = require('../model/postModel');
 const commentModel = require('../model/commentModel');
+const {createCommentNotification} = require('../controller/notiController')
 const {io} = require('..')
 // io.on('connection', (socket) => {
 //     socket.on('on-comment', (data) => {
@@ -13,6 +14,7 @@ module.exports = {
       try{
         const idPost = req.params.id; // Điều này sẽ lấy đúng id từ tham số URL
         const author = await userModel.findOne({ email: req.payload.email});
+        const idAuthorPost = await postModel.findById(idPost).populate('author', '_id').select('author')
         const newComment = new commentModel({
           author: author._id,
           post: idPost,
@@ -26,7 +28,7 @@ module.exports = {
           comment: newComment.content,
           date: newComment.createdAt
         });
-        io.emit('newConnection', 'Có thông báo')
+        await createCommentNotification(idAuthorPost.author._id, author._id);
         res.redirect(`/single-post/${idPost}`);
       }
       catch{

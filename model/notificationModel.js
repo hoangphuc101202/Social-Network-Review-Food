@@ -17,7 +17,7 @@ const notiSchema = new Schema({
       },
       senderId: {
         type: Schema.Types.ObjectId,
-        ref: 'User', // Tham chiếu đến mô hình User (nếu bạn có mô hình User)
+        ref: 'User', 
       },
       isRead: {
         type: Boolean,
